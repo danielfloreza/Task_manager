@@ -14,7 +14,8 @@ def verificationanswer(uanswer,min,max):
 def verificationdata(user,password):
     try:
         with open("data/"+user+"/task.txt", "r") as user:
-            passwordsaved=user.readline(1)
+            userlist=user.readlines()
+            passwordsaved=userlist[1]
             passwordsaved=passwordsaved.strip()
             if passwordsaved==password:
                 user.close()
@@ -26,8 +27,81 @@ def verificationdata(user,password):
         return False
         
 
-def start(user):
+def showmenu():
+    print("MENÚ\n")
+    print("1. Ver todas tus tareas.")
+    print("2. Ver tus pendientes.")
+    print("3. Ver tus tareas completadas.")
+    print("4. Agregar tarea.")
+    print("5. Eliminar tarea.\n")
+    uanswer=input(": ")
+    is_valid=verificationanswer(uanswer,1,5)
+    if is_valid:
+        return uanswer
+    else:
+        print("Escoge una respuesta válida.\n")
+        return showmenu()
+
+
+def showtask(user,alltask,indicator):
+    if int(indicator)==int(1):
+        if len(alltask)!=0:
+            print("Estas son todas tus tareas.\n")
+            for task in alltask:
+                print(task.strip())
+            start(user)
+        else:
+            print("No tienes tareas aun.\n")
+            start(user)
+            
+    elif int(indicator)==int(2):
+        print("Estas son tus tareas pendientes:\n")
+        for task in alltask:
+            if task[1]==" ":
+                print(task.strip())
+        start(user)
+    
+    elif int(indicator)==(3):
+        print("Estas son tus tareas completadas:\n")
+        for task in alltask:
+            if task[1]=="X":
+                print(task.strip())
+        start(user)
+        
+
+def addtask():
     pass
+
+
+def deletetask():
+    pass    
+        
+
+def start(user):
+    task=open("data/"+user+"/task.txt", "r")
+    tasklist=task.readlines()
+    task.close()
+    name=tasklist[2]
+    name=name.strip()
+    alltask=tasklist[3:]
+    
+    
+    print("================================")
+    print("\nBienvenido "+name)
+    print("Qué quieres hacer hoy?\n")
+    uanswer=showmenu()
+    
+    if int(uanswer)!=int(4) and int(uanswer)!=int(5):
+        showtask(user,alltask,uanswer)
+    else:
+        if int(uanswer)==int(4):
+            addtask()
+        else:
+            deletetask()
+    
+    
+      
+    
 
 
 def login():
