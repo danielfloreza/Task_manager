@@ -13,8 +13,9 @@ def verificationanswer(uanswer,min,max):
 
 def verificationdata(user,password):
     try:
-        with open("../data/"+user) as user:
+        with open("data/"+user+"/task.txt", "r") as user:
             passwordsaved=user.readline(1)
+            passwordsaved=passwordsaved.strip()
             if passwordsaved==password:
                 user.close()
                 return True
@@ -52,10 +53,11 @@ def singup():
         name=input("Escribe tu nombre: ")
         
         os.mkdir("data/"+user)
-        task=open("data/task.txt","w")
+        task=open("data/"+user+"/task.txt","w")
         task.write(user+"\n")
         task.write(password+"\n")
         task.write(name+"\n")
+        task.close()
         
         print("Tu registro ha sido exitoso!\n")
         run()
