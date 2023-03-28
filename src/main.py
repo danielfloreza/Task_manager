@@ -49,39 +49,60 @@ def showtask(user,alltask,indicator):
     if int(indicator)==int(1):
         if len(alltask)!=0:
             print("Estas son todas tus tareas.\n")
+            print("____________________________")
             for task in alltask:
                 print(task.strip())
+            print("____________________________")
+            input("Presiona una tecla y enter para regresar al menú principal.\n")
             start(user)
         else:
             print("No tienes tareas aun.\n")
+            print("____________________________")
+            input("Presiona una tecla y enter para regresar al menú principal.\n")
             start(user)
             
     elif int(indicator)==int(2):
         print("Estas son tus tareas pendientes:\n")
+        print("____________________________")
         for task in alltask:
             if task[1]==" ":
                 print(task.strip())
+        print("____________________________")
+        input("Presiona una tecla y enter para regresar al menú principal.\n")
         start(user)
     
     elif int(indicator)==(3):
         print("Estas son tus tareas completadas:\n")
+        print("____________________________")
         for task in alltask:
             if task[1]=="X":
                 print(task.strip())
+        print("____________________________")
+        input("Presiona una tecla y enter para regresar al menú principal.\n")
         start(user)
         
 
 def addtask(user):
     task = input("Escribe la descripción de la tarea: ")
+    os.system("clear")
     task = "| | " + task.strip() + "\n"
     with open("data/"+user+"/task.txt", "a") as taskfile:
         taskfile.write(task)
     print("La tarea ha sido agregada con éxito.\n")
+    print("____________________________")
+    input("Presiona una tecla y enter para regresar al menú principal.\n")
     start(user)
     
 
 def completetask(user):
-    task_num = input("Escribe el número de la tarea que quieres completar: ")
+    with open("data/"+user+"/task.txt", "r") as taskfile:
+        tasks = taskfile.readlines()
+        print("Estas son tus tareas:\n")
+        for i in range(len(tasks)-3):
+            print(str(i+1) + ". " + tasks[i+3].strip())
+    
+    task_num = input("\nEscribe el número de la tarea que quieres completar: ")
+    os.system("clear")
     task_num = int(task_num) - 1
     with open("data/"+user+"/task.txt", "r") as taskfile:
         tasks = taskfile.readlines()
@@ -92,9 +113,13 @@ def completetask(user):
         with open("data/"+user+"/task.txt", "w") as taskfile:
             taskfile.writelines(tasks)
         print("La tarea ha sido completada con éxito.\n")
+        print("____________________________")
+        input("Presiona una tecla y enter para regresar al menú principal.\n")
         start(user)
     else:
         print("El número de tarea no es válido.\n")
+        print("____________________________")
+        input("Presiona una tecla y enter para regresar al menú principal.\n")
         start(user)
 
 
@@ -107,6 +132,7 @@ def deletetask(user):
         print(str(i+1) + ". " + tasks[i+3].strip())
 
     task_num = input("Escribe el número de la tarea que quieres eliminar: ")
+    os.system("clear")
     is_valid = verificationanswer(task_num, 1, len(tasks)-3)
     
     if is_valid:
@@ -115,9 +141,13 @@ def deletetask(user):
         with open("data/"+user+"/task.txt", "w") as taskfile:
             taskfile.writelines(tasks)
         print("La tarea ha sido eliminada con éxito.\n")
+        print("____________________________")
+        input("Presiona una tecla y enter para regresar al menú principal.\n")
         start(user)
     else:
         print("El número de tarea no es válido.\n")
+        print("____________________________")
+        input("Presiona una tecla y enter para regresar al menú principal.\n")
         start(user)    
         
 
@@ -131,9 +161,10 @@ def start(user):
     
     
     print("================================")
-    print("\nBienvenido "+name)
-    print("Qué quieres hacer hoy?\n")
+    print("\nBienvenido "+name+"\n")
+    print("¿Qué quieres hacer hoy?\n")
     uanswer=showmenu()
+    os.system("clear")
     
     if int(uanswer)< int(4):
         showtask(user,alltask,uanswer)
@@ -152,6 +183,7 @@ def login():
     user=input("Escribe tu usuario: ")
     password=input("Escribe tu contraseña: ")
     is_valid=verificationdata(user, password)
+    os.system("clear")
     
     if is_valid:
         start(user)
@@ -177,6 +209,7 @@ def singup():
         task.write(name+"\n")
         task.close()
         
+        os.system("clear")
         print("Tu registro ha sido exitoso!\n")
         run()
         
@@ -186,6 +219,7 @@ def run():
     print("2. Crear cuenta.")
     print("3. Salir.\n")
     uanswer=(input(": "))
+    os.system("clear")
     is_valid=verificationanswer(uanswer,1,3)
     
     if is_valid:

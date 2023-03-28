@@ -4,3 +4,4 @@ daniel
 | | tarea de prueba
 |X| otra tarea
 |X| tarea 3
+|X| tarea agregada
