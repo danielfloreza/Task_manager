@@ -33,9 +33,11 @@ def showmenu():
     print("2. Ver tus pendientes.")
     print("3. Ver tus tareas completadas.")
     print("4. Agregar tarea.")
-    print("5. Eliminar tarea.\n")
+    print("5. completar tarea.")
+    print("6. Eliminar tarea.\n")
+    print("7. Salir.\n")
     uanswer=input(": ")
-    is_valid=verificationanswer(uanswer,1,5)
+    is_valid=verificationanswer(uanswer,1,7)
     if is_valid:
         return uanswer
     else:
@@ -69,12 +71,54 @@ def showtask(user,alltask,indicator):
         start(user)
         
 
-def addtask():
-    pass
+def addtask(user):
+    task = input("Escribe la descripción de la tarea: ")
+    task = "| | " + task.strip() + "\n"
+    with open("data/"+user+"/task.txt", "a") as taskfile:
+        taskfile.write(task)
+    print("La tarea ha sido agregada con éxito.\n")
+    start(user)
+    
+
+def completetask(user):
+    task_num = input("Escribe el número de la tarea que quieres completar: ")
+    task_num = int(task_num) - 1
+    with open("data/"+user+"/task.txt", "r") as taskfile:
+        tasks = taskfile.readlines()
+    if task_num < len(tasks) - 3:
+        task = tasks[task_num + 3].strip()
+        task = "|X|" + task[3:]
+        tasks[task_num + 3] = task + "\n"
+        with open("data/"+user+"/task.txt", "w") as taskfile:
+            taskfile.writelines(tasks)
+        print("La tarea ha sido completada con éxito.\n")
+        start(user)
+    else:
+        print("El número de tarea no es válido.\n")
+        start(user)
 
 
-def deletetask():
-    pass    
+def deletetask(user):
+    with open("data/"+user+"/task.txt", "r") as taskfile:
+        tasks = taskfile.readlines()
+
+    print("Estas son tus tareas:\n")
+    for i in range(len(tasks)-3):
+        print(str(i+1) + ". " + tasks[i+3].strip())
+
+    task_num = input("Escribe el número de la tarea que quieres eliminar: ")
+    is_valid = verificationanswer(task_num, 1, len(tasks)-3)
+    
+    if is_valid:
+        task_num = int(task_num) - 1
+        del tasks[task_num+3]
+        with open("data/"+user+"/task.txt", "w") as taskfile:
+            taskfile.writelines(tasks)
+        print("La tarea ha sido eliminada con éxito.\n")
+        start(user)
+    else:
+        print("El número de tarea no es válido.\n")
+        start(user)    
         
 
 def start(user):
@@ -91,19 +135,19 @@ def start(user):
     print("Qué quieres hacer hoy?\n")
     uanswer=showmenu()
     
-    if int(uanswer)!=int(4) and int(uanswer)!=int(5):
+    if int(uanswer)< int(4):
         showtask(user,alltask,uanswer)
     else:
         if int(uanswer)==int(4):
-            addtask()
+            addtask(user)
+        elif int(uanswer)==int(5):
+            completetask(user)
+        elif int(uanswer)==int(6):
+            deletetask(user)
         else:
-            deletetask()
+            pass
     
     
-      
-    
-
-
 def login():
     user=input("Escribe tu usuario: ")
     password=input("Escribe tu contraseña: ")
@@ -140,15 +184,18 @@ def singup():
 def run():
     print("1. Iniciar sesión.")
     print("2. Crear cuenta.")
+    print("3. Salir.\n")
     uanswer=(input(": "))
-    is_valid=verificationanswer(uanswer,1,2)
+    is_valid=verificationanswer(uanswer,1,3)
     
     if is_valid:
         if int(uanswer)==int(1):
             login()
-        else:
+        elif int(uanswer)== int(2):
             print("Iniciemos tu proceso de registro.\n")
             singup()
+        else:
+            pass
     else:
         print("Escribe una opción válida.\n")
         run()

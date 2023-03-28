@@ -1,3 +1,6 @@
 dan
 dan
 daniel
+| | tarea de prueba
+|X| otra tarea
+|X| tarea 3
